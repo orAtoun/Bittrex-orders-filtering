@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://knockoutjs.com/downloads/knockout-3.4.2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="common.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<div class="container" >
+    <h2 align="center">Bittrex order book </h2>
+    <p>Please select currency pair and press GO to load:</p>
+    <form action="orderBook.html" method="get">
+        Base currency :
+        <select name="base" id="base" data-bind="value: baseCurrency">
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="USDT">USDT</option>
+        </select>
+        Quote currency :
+        <select name="quote" id="quote" data-bind="options: currencyMarketQuotes()[baseCurrency()], value: quoteCurrency">
+        </select>
+
+        <input type="submit" value="GO..">
+    </form>
+    <br>
+    <p>The selected pair : <span data-bind="text: selectedPairText()"></span></p>
+    <p> Select the order type :  </p>
+    <label class="radio-inline">
+        <input type="radio" name="optradio" value="buy" data-bind="checked: orderType, click: clickQuant">Buy
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="optradio" value="sell" data-bind="checked: orderType, click: clickQuant">Sell
+    </label>
+
+    <div class="slidecontainer"  style="width: 50%;" >
+        <p class="QuantityContainer">Quantity filter: Display only amount of orders above your choice</p>
+        <input data-bind="value: minQuantity, min: minGlobeQuant, max: maxGlobeQuant" type="range" id="quantityRange">
+        <p data-bind="text: minQuantity"> </p>
+        <p class="RateContainer">Rate filter: Display only orders below your selected rate </p>
+        <input data-bind="value: maxRate, min: minGlobeRate, max: maxGlobeRate" type="range" step="0.0000001" id="rateRange">
+        <p data-bind="text: maxRate"> </p>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Quantity</th>
+            <th>Rate</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: orderBookInfo()[orderType()]">
+        <tr data-bind="visible: $parent.isVisible(Quantity,Rate)">
+            <div>
+                <td data-bind="text: Quantity"></td>
+                <td data-bind="text: Rate"></td>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
